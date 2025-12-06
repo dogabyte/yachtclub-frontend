@@ -1,0 +1,34 @@
+/* src/app.css o src/styles.css */
+
+/* Reset y estilos básicos */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Botones globales */
+button {
+  cursor: pointer;
+}
+
+/* Contenedores generales */
+.container {
+  padding: 20px;
+}
+
+/* Cabecera / Navbar */
+.navbar {
+  margin-bottom: 20px;
+}
+
+/* Mensajes de error globales */
+.text-danger {
+  font-weight: 500;
+}
