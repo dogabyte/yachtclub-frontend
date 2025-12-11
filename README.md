@@ -43,8 +43,8 @@ A modern, responsive web application for yacht club management built with Angula
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/yachtclub-frontend-angular.git
-cd yachtclub-frontend-angular
+git clone https://github.com/dogabyte/yachtclub-frontend.git
+cd yachtclub-frontend
 ```
 
 ### 2. Install Dependencies
@@ -224,7 +224,7 @@ npx prettier --write "src/**/*.{ts,html,css}"
 
 ## 🌐 Backend Integration
 
-This frontend requires the Yacht Club Backend API to be running. See the [backend repository](https://github.com/yourusername/yachtclub-backend) for setup instructions.
+This frontend requires the Yacht Club Backend API to be running. See the [backend repository](https://github.com/dogabyte/yachtclub-backend) for setup instructions.
 
 ### API Endpoints Used
 
@@ -268,7 +268,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Authors
 
-- **Your Name** - *Initial work* - [YourGitHub](https://github.com/yourusername)
+- **Gabriel** - *Initial work* - [dogabyte](https://github.com/dogabyte)
 
 ## 🙏 Acknowledgments
 
