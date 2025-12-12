@@ -220,7 +220,7 @@ Partner (1) ──────── (N) Mooring (purchased moorings)
 
 ### Development Practices
 - MVC architectural pattern
-- Factory Method pattern for user creation
+- Strategy Pattern for authentication (UserAuthenticationStrategy)
 - Repository pattern for data access
 - Service layer for business logic
 - DTO pattern for data transfer
