@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminEmployeesComponent } from './admin-employees.component';
 import { EmployeeService } from '../../../../services/employee.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
 describe('AdminEmployeesComponent', () => {
@@ -19,8 +20,10 @@ describe('AdminEmployeesComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [AdminEmployeesComponent, HttpClientTestingModule, FormsModule],
+            imports: [AdminEmployeesComponent, FormsModule],
             providers: [
+                provideHttpClient(),
+                provideHttpClientTesting(),
                 { provide: EmployeeService, useValue: mockEmployeeService }
             ]
         })

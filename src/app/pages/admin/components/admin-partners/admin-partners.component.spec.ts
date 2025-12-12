@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminPartnersComponent } from './admin-partners.component';
 import { PartnerService } from '../../../../services/partner.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
 describe('AdminPartnersComponent', () => {
@@ -19,8 +20,10 @@ describe('AdminPartnersComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [AdminPartnersComponent, HttpClientTestingModule, FormsModule],
+            imports: [AdminPartnersComponent, FormsModule],
             providers: [
+                provideHttpClient(),
+                provideHttpClientTesting(),
                 { provide: PartnerService, useValue: mockPartnerService }
             ]
         })

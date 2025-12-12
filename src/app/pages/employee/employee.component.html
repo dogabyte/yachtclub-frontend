@@ -1,184 +1,200 @@
 <div class="min-h-screen bg-gray-50 font-sans">
-    <!-- Navbar -->
-    <nav class="bg-emerald-800 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <span class="text-white text-xl font-bold tracking-wider">YACHT CLUB - STAFF</span>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <button (click)="logout()"
-                        class="ml-4 px-4 py-2 rounded-md text-sm font-medium text-emerald-100 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-emerald-800 focus:ring-white transition-colors">
-                        Cerrar Sesión
-                    </button>
-                </div>
+  <!-- Navbar -->
+  <nav class="bg-emerald-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 flex items-center">
+            <span class="text-white text-xl font-bold tracking-wider">YACHT CLUB - STAFF</span>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <button (click)="logout()"
+            class="ml-4 px-4 py-2 rounded-md text-sm font-medium text-emerald-100 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-emerald-800 focus:ring-white transition-colors">
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-10">
+      <h1 class="text-3xl font-extrabold text-emerald-900 tracking-tight">Panel de Empleado</h1>
+      <p class="mt-2 text-lg text-emerald-600">
+        Bienvenido{{ employee && employee.name ? ', ' + employee.name : '' }}
+      </p>
+    </div>
+
+    @if (loading) {
+      <div class="flex justify-center items-center py-20">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-900"></div>
+      </div>
+    }
+
+    @if (!loading) {
+      <div>
+        <!-- Profile Summary -->
+        <div class="bg-white overflow-hidden shadow-lg rounded-xl mb-10 border-t-4 border-emerald-500">
+          <div class="px-6 py-5 border-b border-gray-100 bg-gray-50">
+            <h3 class="text-lg leading-6 font-bold text-gray-900">Información del Empleado</h3>
+          </div>
+          <div class="px-6 py-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
+                <p class="text-sm font-medium text-emerald-600 uppercase tracking-wider">Código de Empleado
+                </p>
+                <p class="mt-1 text-2xl font-bold text-emerald-900">{{ employee?.code || 'N/A' }}</p>
+              </div>
+              <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
+                <p class="text-sm font-medium text-emerald-600 uppercase tracking-wider">Usuario</p>
+                <p class="mt-1 text-2xl font-bold text-emerald-900">{{ employee?.username || 'N/A' }}</p>
+              </div>
+              <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
+                <p class="text-sm font-medium text-emerald-600 uppercase tracking-wider">Zonas Asignadas</p>
+                <p class="mt-1 text-2xl font-bold text-emerald-900">{{ zonesData.length }}</p>
+              </div>
             </div>
+          </div>
         </div>
-    </nav>
-
-    <main class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="mb-10">
-            <h1 class="text-3xl font-extrabold text-emerald-900 tracking-tight">Panel de Empleado</h1>
-            <p class="mt-2 text-lg text-emerald-600">
-                Bienvenido{{ employee && employee.name ? ', ' + employee.name : '' }}
-            </p>
-        </div>
-
-        <div *ngIf="loading" class="flex justify-center items-center py-20">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-900"></div>
-        </div>
-
-        <div *ngIf="!loading">
-            <!-- Profile Summary -->
-            <div class="bg-white overflow-hidden shadow-lg rounded-xl mb-10 border-t-4 border-emerald-500">
-                <div class="px-6 py-5 border-b border-gray-100 bg-gray-50">
-                    <h3 class="text-lg leading-6 font-bold text-gray-900">Información del Empleado</h3>
-                </div>
-                <div class="px-6 py-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
-                            <p class="text-sm font-medium text-emerald-600 uppercase tracking-wider">Código de Empleado
-                            </p>
-                            <p class="mt-1 text-2xl font-bold text-emerald-900">{{ employee?.code || 'N/A' }}</p>
-                        </div>
-                        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
-                            <p class="text-sm font-medium text-emerald-600 uppercase tracking-wider">Usuario</p>
-                            <p class="mt-1 text-2xl font-bold text-emerald-900">{{ employee?.username || 'N/A' }}</p>
-                        </div>
-                        <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
-                            <p class="text-sm font-medium text-emerald-600 uppercase tracking-wider">Zonas Asignadas</p>
-                            <p class="mt-1 text-2xl font-bold text-emerald-900">{{ zonesData.length }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Zones Section -->
-            <h2 class="text-2xl font-bold text-emerald-900 mb-6 flex items-center">
-                <svg class="h-6 w-6 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-1.447-.894L15 7m0 13V7m0 0L9 4" />
+        <!-- Zones Section -->
+        <h2 class="text-2xl font-bold text-emerald-900 mb-6 flex items-center">
+          <svg class="h-6 w-6 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-1.447-.894L15 7m0 13V7m0 0L9 4" />
+          </svg>
+          Zonas Asignadas
+        </h2>
+        @if (zonesData.length === 0) {
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-md">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clip-rule="evenodd" />
                 </svg>
-                Zonas Asignadas
-            </h2>
-
-            <div *ngIf="zonesData.length === 0" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-md">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700">
-                            No tienes zonas asignadas actualmente.
-                        </p>
-                    </div>
-                </div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                  No tienes zonas asignadas actualmente.
+                </p>
+              </div>
             </div>
-
-            <div *ngFor="let zone of zonesData"
-                class="mb-10 bg-white overflow-hidden shadow-md rounded-xl border border-gray-200">
-                <div
-                    class="px-6 py-5 bg-gradient-to-r from-emerald-600 to-teal-600 border-b border-gray-200 flex justify-between items-center">
-                    <h3 class="text-xl leading-6 font-bold text-white">
-                        Zona: {{ zone.name }}
-                    </h3>
-                    <div class="text-emerald-100 text-sm space-x-4">
-                        <span>Tipo: <span class="font-semibold text-white">{{ zone.boatType }}</span></span>
-                        <span>|</span>
-                        <span>Capacidad: <span class="font-semibold text-white">{{ zone.boatCapacity }}</span></span>
-                        <span>|</span>
-                        <span>Profundidad: <span class="font-semibold text-white">{{ zone.depth }}m</span></span>
-                    </div>
-                </div>
-                <div class="px-6 py-6">
-                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                        <svg class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                        Estado de Amarres
-                    </h4>
-
-                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        ID</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Embarcación</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Mantenimiento</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Consumo</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <tr *ngFor="let mooring of zone.moorings" class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{{
-                                        mooring.id }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        <span *ngIf="mooring.vesselId"
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                            Ocupado
-                                        </span>
-                                        <span *ngIf="!mooring.vesselId"
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            Libre
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        <span *ngIf="mooring.maintenanceService"
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                            Requerido
-                                        </span>
-                                        <span *ngIf="!mooring.maintenanceService"
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                            OK
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <div class="flex flex-col space-y-1">
-                                            <span class="flex items-center">
-                                                <svg class="h-4 w-4 mr-1 text-blue-400" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                                                </svg>
-                                                {{ mooring.waterConsumption || 0 }} L
-                                            </span>
-                                            <span class="flex items-center">
-                                                <svg class="h-4 w-4 mr-1 text-yellow-400" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                                </svg>
-                                                {{ mooring.electricityConsumption || 0 }} kW
-                                            </span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr *ngIf="zone.moorings.length === 0">
-                                    <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500 italic">No hay
-                                        amarres en esta zona</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+          </div>
+        }
+        @for (zone of zonesData; track zone) {
+          <div
+            class="mb-10 bg-white overflow-hidden shadow-md rounded-xl border border-gray-200">
+            <div
+              class="px-6 py-5 bg-gradient-to-r from-emerald-600 to-teal-600 border-b border-gray-200 flex justify-between items-center">
+              <h3 class="text-xl leading-6 font-bold text-white">
+                Zona: {{ zone.name }}
+              </h3>
+              <div class="text-emerald-100 text-sm space-x-4">
+                <span>Tipo: <span class="font-semibold text-white">{{ zone.boatType }}</span></span>
+                <span>|</span>
+                <span>Capacidad: <span class="font-semibold text-white">{{ zone.boatCapacity }}</span></span>
+                <span>|</span>
+                <span>Profundidad: <span class="font-semibold text-white">{{ zone.depth }}m</span></span>
+              </div>
             </div>
-        </div>
-    </main>
+            <div class="px-6 py-6">
+              <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <svg class="h-5 w-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                Estado de Amarres
+              </h4>
+              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ID</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Embarcación</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Mantenimiento</th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Consumo</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    @for (mooring of zone.moorings; track mooring) {
+                      <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{{
+                        mooring.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                          @if (mooring.vesselId) {
+                            <span
+                              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                              Ocupado
+                            </span>
+                          }
+                          @if (!mooring.vesselId) {
+                            <span
+                              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              Libre
+                            </span>
+                          }
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                          @if (mooring.maintenanceService) {
+                            <span
+                              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                              Requerido
+                            </span>
+                          }
+                          @if (!mooring.maintenanceService) {
+                            <span
+                              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              OK
+                            </span>
+                          }
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <div class="flex flex-col space-y-1">
+                            <span class="flex items-center">
+                              <svg class="h-4 w-4 mr-1 text-blue-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                              </svg>
+                              {{ mooring.waterConsumption || 0 }} L
+                            </span>
+                            <span class="flex items-center">
+                              <svg class="h-4 w-4 mr-1 text-yellow-400" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                              </svg>
+                              {{ mooring.electricityConsumption || 0 }} kW
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                    @if (zone.moorings.length === 0) {
+                      <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500 italic">No hay
+                        amarres en esta zona</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </main>
 </div>

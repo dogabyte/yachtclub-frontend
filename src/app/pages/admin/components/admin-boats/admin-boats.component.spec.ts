@@ -3,9 +3,9 @@ import { AdminBoatsComponent } from './admin-boats.component';
 import { BoatService } from '../../../../services/boat.service';
 import { PartnerService } from '../../../../services/partner.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 describe('AdminBoatsComponent', () => {
     let component: AdminBoatsComponent;
@@ -26,9 +26,10 @@ describe('AdminBoatsComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [AdminBoatsComponent, HttpClientTestingModule, FormsModule],
+            imports: [AdminBoatsComponent, FormsModule],
             providers: [
-                {provide: HTTP_INTERCEPTORS},
+                provideHttpClient(),
+                provideHttpClientTesting(),
                 { provide: BoatService, useValue: mockBoatService },
                 { provide: PartnerService, useValue: mockPartnerService }
             ]

@@ -3,7 +3,8 @@ import { AdminMooringsComponent } from './admin-moorings.component';
 import { MooringService } from '../../../../services/mooring.service';
 import { ZoneService } from '../../../../services/zone.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
 describe('AdminMooringsComponent', () => {
@@ -25,8 +26,10 @@ describe('AdminMooringsComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [AdminMooringsComponent, HttpClientTestingModule, FormsModule],
+            imports: [AdminMooringsComponent, FormsModule],
             providers: [
+                provideHttpClient(),
+                provideHttpClientTesting(),
                 { provide: MooringService, useValue: mockMooringService },
                 { provide: ZoneService, useValue: mockZoneService }
             ]

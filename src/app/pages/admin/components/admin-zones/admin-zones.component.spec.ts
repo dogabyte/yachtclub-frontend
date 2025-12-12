@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminZonesComponent } from './admin-zones.component';
 import { ZoneService } from '../../../../services/zone.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 
 describe('AdminZonesComponent', () => {
@@ -19,8 +20,10 @@ describe('AdminZonesComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [AdminZonesComponent, HttpClientTestingModule, FormsModule],
+            imports: [AdminZonesComponent, FormsModule],
             providers: [
+                provideHttpClient(),
+                provideHttpClientTesting(),
                 { provide: ZoneService, useValue: mockZoneService }
             ]
         })

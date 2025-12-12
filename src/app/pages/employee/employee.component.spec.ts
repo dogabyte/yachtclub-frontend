@@ -5,7 +5,8 @@ import { ZoneService } from '../../services/zone.service';
 import { MooringService } from '../../services/mooring.service';
 import { AuthService } from '../../core/auth.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('EmployeeComponent', () => {
     let component: EmployeeComponent;
@@ -37,8 +38,10 @@ describe('EmployeeComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [EmployeeComponent, HttpClientTestingModule],
+            imports: [EmployeeComponent],
             providers: [
+                provideHttpClient(),
+                provideHttpClientTesting(),
                 { provide: EmployeeService, useValue: mockEmployeeService },
                 { provide: ZoneService, useValue: mockZoneService },
                 { provide: MooringService, useValue: mockMooringService },

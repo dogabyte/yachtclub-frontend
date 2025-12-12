@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MooringService } from '../../../../services/mooring.service';
 import { ZoneService } from '../../../../services/zone.service';
@@ -9,7 +9,7 @@ import { Zone } from '../../../../models/zone.model';
 @Component({
     selector: 'app-admin-moorings',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [FormsModule],
     templateUrl: './admin-moorings.component.html',
     styleUrls: ['./admin-moorings.component.css']
 })
@@ -68,24 +68,26 @@ export class AdminMooringsComponent implements OnInit {
         this.editingMooring = null;
     }
 
+    errors: any = {};
+
     onSubmit(): void {
-        if (this.editingMooring) {
-            this.mooringService.update(this.editingMooring.id, this.formData).subscribe({
-                next: () => {
-                    this.loadMoorings();
-                    this.closeForm();
-                },
-                error: (err) => console.error('Error updating mooring', err)
-            });
-        } else {
-            this.mooringService.create(this.formData).subscribe({
-                next: () => {
-                    this.loadMoorings();
-                    this.closeForm();
-                },
-                error: (err) => console.error('Error creating mooring', err)
-            });
-        }
+        this.errors = {};
+        const request = this.editingMooring
+            ? this.mooringService.update(this.editingMooring.id, this.formData)
+            : this.mooringService.create(this.formData);
+
+        request.subscribe({
+            next: () => {
+                this.loadMoorings();
+                this.closeForm();
+            },
+            error: (err: any) => {
+                console.error('Error saving mooring', err);
+                if (err.status === 400 && err.error.validationErrors) {
+                    this.errors = err.error.validationErrors;
+                }
+            }
+        });
     }
 
     deleteMooring(id: number): void {

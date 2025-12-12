@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { BoatService } from '../../../../services/boat.service';
 import { PartnerService } from '../../../../services/partner.service';
@@ -9,7 +9,7 @@ import { Partner } from '../../../../models/partner.model';
 @Component({
     selector: 'app-admin-boats',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [FormsModule],
     templateUrl: './admin-boats.component.html',
     styleUrls: ['./admin-boats.component.css']
 })
@@ -69,24 +69,26 @@ export class AdminBoatsComponent implements OnInit {
         this.editingBoat = null;
     }
 
+    errors: any = {};
+
     onSubmit(): void {
-        if (this.editingBoat && this.editingBoat.id) {
-            this.boatService.update(this.editingBoat.id, this.formData).subscribe({
-                next: () => {
-                    this.loadBoats();
-                    this.closeForm();
-                },
-                error: (err) => console.error('Error updating boat', err)
-            });
-        } else {
-            this.boatService.create(this.formData).subscribe({
-                next: () => {
-                    this.loadBoats();
-                    this.closeForm();
-                },
-                error: (err) => console.error('Error creating boat', err)
-            });
-        }
+        this.errors = {};
+        const request = this.editingBoat && this.editingBoat.id
+            ? this.boatService.update(this.editingBoat.id, this.formData)
+            : this.boatService.create(this.formData);
+
+        request.subscribe({
+            next: () => {
+                this.loadBoats();
+                this.closeForm();
+            },
+            error: (err: any) => {
+                console.error('Error saving boat', err);
+                if (err.status === 400 && err.error.validationErrors) {
+                    this.errors = err.error.validationErrors;
+                }
+            }
+        });
     }
 
     deleteBoat(id: number): void {

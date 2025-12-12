@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { BoatService } from '../../services/boat.service';
 import { PartnerService } from '../../services/partner.service';
 import { Boat } from '../../models/boat.model';
@@ -9,7 +9,7 @@ import { AuthService } from '../../core/auth.service';
 @Component({
     selector: 'app-partner',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './partner.component.html',
     styleUrls: ['./partner.component.css']
 })

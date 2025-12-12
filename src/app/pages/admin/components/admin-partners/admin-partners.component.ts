@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { PartnerService } from '../../../../services/partner.service';
 import { Partner } from '../../../../models/partner.model';
@@ -7,7 +7,7 @@ import { Partner } from '../../../../models/partner.model';
 @Component({
     selector: 'app-admin-partners',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [FormsModule],
     templateUrl: './admin-partners.component.html',
     styleUrls: ['./admin-partners.component.css']
 })
@@ -29,11 +29,11 @@ export class AdminPartnersComponent implements OnInit {
     loadPartners(): void {
         this.loading = true;
         this.partnerService.getAll().subscribe({
-            next: (data) => {
+            next: (data: Partner[]) => {
                 this.partners = data;
                 this.loading = false;
             },
-            error: (err) => {
+            error: (err: any) => {
                 console.error('Error loading partners', err);
                 this.loading = false;
             }
@@ -74,7 +74,7 @@ export class AdminPartnersComponent implements OnInit {
                 this.loadPartners();
                 this.closeForm();
             },
-            error: (err) => {
+            error: (err: any) => {
                 console.error('Error submitting partner', err);
                 if (err.status === 400 && err.error.validationErrors) {
                     this.errors = err.error.validationErrors;
@@ -89,7 +89,7 @@ export class AdminPartnersComponent implements OnInit {
         if (confirm('Are you sure you want to delete this partner?')) {
             this.partnerService.delete(id).subscribe({
                 next: () => this.loadPartners(),
-                error: (err) => console.error('Error deleting partner', err)
+                error: (err: any) => console.error('Error deleting partner', err)
             });
         }
     }

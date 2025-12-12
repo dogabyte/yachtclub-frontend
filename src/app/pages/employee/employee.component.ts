@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { EmployeeService } from '../../services/employee.service';
 import { ZoneService } from '../../services/zone.service';
 import { MooringService } from '../../services/mooring.service';
@@ -17,7 +17,7 @@ interface ZoneData extends Zone {
 @Component({
     selector: 'app-employee',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './employee.component.html',
     styleUrls: ['./employee.component.css']
 })

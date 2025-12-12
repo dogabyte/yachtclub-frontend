@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ZoneService } from '../../../../services/zone.service';
 import { Zone } from '../../../../models/zone.model';
@@ -7,7 +7,7 @@ import { Zone } from '../../../../models/zone.model';
 @Component({
     selector: 'app-admin-zones',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [FormsModule],
     templateUrl: './admin-zones.component.html',
     styleUrls: ['./admin-zones.component.css']
 })
@@ -56,28 +56,26 @@ export class AdminZonesComponent implements OnInit {
         this.editingZone = null;
     }
 
+    errors: any = {};
+
     onSubmit(): void {
-        if (this.editingZone) {
-            // Zone update uses name as identifier in service, but let's check if we should use ID or Name
-            // Service has update(name, zone). If name changes, this might be tricky.
-            // Assuming name is the key or we use ID if backend supports it.
-            // Let's use the original name for the update call
-            this.zoneService.update(this.editingZone.name, this.formData).subscribe({
-                next: () => {
-                    this.loadZones();
-                    this.closeForm();
-                },
-                error: (err) => console.error('Error updating zone', err)
-            });
-        } else {
-            this.zoneService.create(this.formData).subscribe({
-                next: () => {
-                    this.loadZones();
-                    this.closeForm();
-                },
-                error: (err) => console.error('Error creating zone', err)
-            });
-        }
+        this.errors = {};
+        const request = this.editingZone
+            ? this.zoneService.update(this.editingZone.name, this.formData)
+            : this.zoneService.create(this.formData);
+
+        request.subscribe({
+            next: () => {
+                this.loadZones();
+                this.closeForm();
+            },
+            error: (err: any) => {
+                console.error('Error saving zone', err);
+                if (err.status === 400 && err.error.validationErrors) {
+                    this.errors = err.error.validationErrors;
+                }
+            }
+        });
     }
 
     deleteZone(id: number): void {

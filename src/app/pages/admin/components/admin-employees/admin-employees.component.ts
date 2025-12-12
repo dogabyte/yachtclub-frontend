@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../../../../services/employee.service';
 import { Employee } from '../../../../models/employee.model';
@@ -7,7 +7,7 @@ import { Employee } from '../../../../models/employee.model';
 @Component({
     selector: 'app-admin-employees',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [FormsModule],
     templateUrl: './admin-employees.component.html',
     styleUrls: ['./admin-employees.component.css']
 })
@@ -21,6 +21,7 @@ export class AdminEmployeesComponent implements OnInit {
 
     private employeeService = inject(EmployeeService);
 
+
     ngOnInit(): void {
         this.loadEmployees();
     }
@@ -32,7 +33,7 @@ export class AdminEmployeesComponent implements OnInit {
                 this.employees = data;
                 this.loading = false;
             },
-            error: (err) => {
+            error: (err: any) => {
                 console.error('Error loading employees', err);
                 this.loading = false;
             }
@@ -56,31 +57,33 @@ export class AdminEmployeesComponent implements OnInit {
         this.editingEmployee = null;
     }
 
+    errors: any = {};
+
     onSubmit(): void {
-        if (this.editingEmployee) {
-            this.employeeService.update(this.editingEmployee.id, this.formData).subscribe({
-                next: () => {
-                    this.loadEmployees();
-                    this.closeForm();
-                },
-                error: (err) => console.error('Error updating employee', err)
-            });
-        } else {
-            this.employeeService.create(this.formData).subscribe({
-                next: () => {
-                    this.loadEmployees();
-                    this.closeForm();
-                },
-                error: (err) => console.error('Error creating employee', err)
-            });
-        }
+        console.log('Submitting form...', this.formData);
+        this.errors = {};
+
+        const request = this.editingEmployee ? this.employeeService.update(this.editingEmployee.id, this.formData) : this.employeeService.create(this.formData);
+
+        request.subscribe({
+            next: () => {
+                this.loadEmployees();
+                this.closeForm();
+            },
+            error: (err: any) => {
+                console.error('Error ' + (this.editingEmployee ? 'updating' : 'creating') + ' employee', err);
+                if (err.status === 400 && err.error.validationErrors) {
+                    this.errors = err.error.validationErrors;
+                }
+            }
+        });
     }
 
     deleteEmployee(id: number): void {
         if (confirm('Are you sure you want to delete this employee?')) {
             this.employeeService.delete(id).subscribe({
                 next: () => this.loadEmployees(),
-                error: (err) => console.error('Error deleting employee', err)
+                error: (err) => console.error('Error dele   ting employee', err)
             });
         }
     }
@@ -95,7 +98,7 @@ export class AdminEmployeesComponent implements OnInit {
             specialty: '',
             username: '',
             password: '',
-            role: 'EMPLEADO',
+            role: 'EMPLOYEE',
             assignedZones: []
         };
     }

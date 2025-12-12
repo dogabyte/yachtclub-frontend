@@ -7,4 +7,6 @@ export interface Boat {
   length: number;
   beam: number;
   draft: number;
+  zoneId?: number;
+  zoneName?: string;
 }

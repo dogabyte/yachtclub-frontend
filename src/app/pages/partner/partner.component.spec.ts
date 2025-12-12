@@ -4,7 +4,8 @@ import { BoatService } from '../../services/boat.service';
 import { PartnerService } from '../../services/partner.service';
 import { AuthService } from '../../core/auth.service';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('PartnerComponent', () => {
     let component: PartnerComponent;
@@ -27,8 +28,10 @@ describe('PartnerComponent', () => {
         };
 
         await TestBed.configureTestingModule({
-            imports: [PartnerComponent, HttpClientTestingModule],
+            imports: [PartnerComponent],
             providers: [
+                provideHttpClient(),
+                provideHttpClientTesting(),
                 { provide: BoatService, useValue: mockBoatService },
                 { provide: PartnerService, useValue: mockPartnerService },
                 { provide: AuthService, useValue: mockAuthService }

@@ -14,12 +14,15 @@
     </div>
 
     <!-- Loading State -->
-    <div *ngIf="loading;true" class="flex justify-center items-center py-20">
+    @if (loading) {
+    <div class="flex justify-center items-center py-20">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-900"></div>
     </div>
+    }
 
     <!-- Partners Table -->
-    <div *ngIf="!loading" class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+    @if (!loading) {
+    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gradient-to-r from-indigo-50 to-indigo-100">
                 <tr>
@@ -34,35 +37,40 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let partner of partners" class="hover:bg-indigo-50 transition-colors">
+                @for (partner of partners; track partner) {
+                <tr class="hover:bg-indigo-50 transition-colors">
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{{ partner.id }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                         {{ partner.name }} {{ partner.lastName }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ partner.dni }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ partner.username }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                         <button (click)="openEditForm(partner)"
-                            class="text-indigo-600 hover:text-indigo-900 font-medium transition-colors">Editar</button>
+                            class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-colors text-xs font-medium">Editar</button>
                         <button (click)="deletePartner(partner.id)"
-                            class="text-red-600 hover:text-red-900 font-medium transition-colors">Eliminar</button>
+                            class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors text-xs font-medium">Eliminar</button>
                     </td>
                 </tr>
-                <tr *ngIf="partners.length === 0">
+                }
+                @if (partners.length === 0) {
+                <tr>
                     <td colspan="5" class="px-6 py-8 text-center text-sm text-gray-500 italic">No hay socios
                         registrados.</td>
                 </tr>
+                }
             </tbody>
         </table>
     </div>
+    }
 
     <!-- Form Modal -->
-    <div *ngIf="showForm"
+    @if (showForm) {
+    <div
         class="fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50 p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-2xl border-t-4 border-indigo-600">
             <h3 class="text-2xl font-bold mb-6 text-indigo-900">{{ editingPartner ? 'Editar Socio' : 'Nuevo Socio' }}
             </h3>
-
             <form (ngSubmit)="onSubmit()">
                 <div class="space-y-5">
                     <div class="grid grid-cols-2 gap-4">
@@ -70,59 +78,70 @@
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Nombre</label>
                             <input type="text" [(ngModel)]="formData.name" name="name"
                                 class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
-                            <div *ngIf="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</div>
+                            @if (errors.name) {
+                            <div class="text-red-500 text-sm mt-1">{{ errors.name }}</div>
+                            }
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Apellido</label>
                             <input type="text" [(ngModel)]="formData.lastName" name="lastName"
                                 class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
-                            <div *ngIf="errors.lastName" class="text-red-500 text-sm mt-1">{{ errors.lastName }}</div>
+                            @if (errors.lastName) {
+                            <div class="text-red-500 text-sm mt-1">{{ errors.lastName }}</div>
+                            }
                         </div>
                     </div>
-
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">DNI</label>
                         <input type="text" [(ngModel)]="formData.dni" name="dni" maxlength="8"
                             class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
-                        <div *ngIf="errors.dni" class="text-red-500 text-sm mt-1">{{ errors.dni }}</div>
+                        @if (errors.dni) {
+                        <div class="text-red-500 text-sm mt-1">{{ errors.dni }}</div>
+                        }
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Dirección</label>
+                            <input type="text" [(ngModel)]="formData.address" name="address"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
+                            @if (errors.address) {
+                            <div class="text-red-500 text-sm mt-1">{{ errors.address }}</div>
+                            }
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label>
+                            <input type="text" [(ngModel)]="formData.phone" name="phone"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
+                            @if (errors.phone) {
+                            <div class="text-red-500 text-sm mt-1">{{ errors.phone }}</div>
+                            }
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Usuario</label>
+                            <input type="text" [(ngModel)]="formData.username" name="username"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
+                            @if (errors.username) {
+                            <div class="text-red-500 text-sm mt-1">{{ errors.username }}</div>
+                            }
+                        </div>
+                        @if (!editingPartner) {
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
+                            <input type="password" [(ngModel)]="formData.password" name="password"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
+                            @if (errors.password) {
+                            <div class="text-red-500 text-sm mt-1">{{ errors.password }}</div>
+                            }
+                        </div>
+                        }
                     </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Dirección</label>
-                        <input type="text" [(ngModel)]="formData.address" name="address"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
-                        <div *ngIf="errors.address" class="text-red-500 text-sm mt-1">{{ errors.address }}</div>
+                    <div class="mt-8 flex justify-end space-x-3">
+                        <button type="button" (click)="closeForm()"
+                            class="px-6 py-2.5 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium transition-colors">Cancelar</button>
+                        <button type="submit"
+                            class="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition-colors shadow-md">Guardar</button>
                     </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label>
-                        <input type="text" [(ngModel)]="formData.phone" name="phone"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
-                        <div *ngIf="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Usuario</label>
-                        <input type="text" [(ngModel)]="formData.username" name="username"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
-                        <div *ngIf="errors.username" class="text-red-500 text-sm mt-1">{{ errors.username }}</div>
-                    </div>
-
-                    <div *ngIf="!editingPartner">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
-                        <input type="password" [(ngModel)]="formData.password" name="password"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 border p-2.5">
-                        <div *ngIf="errors.password" class="text-red-500 text-sm mt-1">{{ errors.password }}</div>
-                    </div>
-                </div>
-
-                <div class="mt-8 flex justify-end space-x-3">
-                    <button type="button" (click)="closeForm()"
-                        class="px-6 py-2.5 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium transition-colors">Cancelar</button>
-                    <button type="submit"
-                        class="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition-colors shadow-md">Guardar</button>
                 </div>
             </form>
         </div>
     </div>
+    }
 </div>
