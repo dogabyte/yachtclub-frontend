@@ -3,6 +3,7 @@ export interface Mooring {
   partnerId?: number;
   zoneId: string;
   vesselId?: string;
+  boatName?: string;
   waterConsumption?: number;
   electricityConsumption?: number;
   maintenanceService: boolean;

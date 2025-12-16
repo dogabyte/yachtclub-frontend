@@ -133,10 +133,10 @@
                         mooring.id }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                           @if (mooring.vesselId) {
-                            <span
-                              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                              Ocupado
-                            </span>
+                             <div class="flex flex-col">
+                                <span class="font-medium text-gray-900">{{ mooring.boatName || 'Sin Nombre' }}</span>
+                                <span class="text-xs text-gray-500">Mat: {{ mooring.vesselId }}</span>
+                             </div>
                           }
                           @if (!mooring.vesselId) {
                             <span
